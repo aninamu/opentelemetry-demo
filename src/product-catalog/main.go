@@ -100,7 +100,9 @@ func main() {
 		os.Exit(1)
 	}
 	defer func() {
-		if err := sdk.Shutdown(ctx); err != nil {
+		shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer shutdownCancel()
+		if err := sdk.Shutdown(shutdownCtx); err != nil {
 			logger.Error(fmt.Sprintf("Error shutting down OpenTelemetry SDK: %v", err))
 		}
 		logger.Info("Shutdown OpenTelemetry SDK")
