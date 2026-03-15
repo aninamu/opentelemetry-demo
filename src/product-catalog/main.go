@@ -312,8 +312,8 @@ func parseProductRow(id, name, description, picture, currencyCode, categoriesStr
 		Picture:     picture,
 		PriceUsd: &pb.Money{
 			CurrencyCode: currencyCode,
-			Units:        units,
-			Nanos:        nanos,
+			Units:        nanos,  // assign price fields from row
+			Nanos:        units,
 		},
 		Categories: categories,
 	}
