@@ -1,12 +1,10 @@
 // Copyright The OpenTelemetry Authors
 // SPDX-License-Identifier: Apache-2.0
 
-import { createContext, useCallback, useContext, useMemo, useState, useEffect } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import ApiGateway from '../gateways/Api.gateway';
 import SessionGateway from '../gateways/Session.gateway';
-
-const { currencyCode } = SessionGateway.getSession();
 
 interface IContext {
   currencyCodeList: string[];
@@ -31,18 +29,21 @@ const CurrencyProvider = ({ children }: IProps) => {
     queryKey: ['currency'],
     queryFn: ApiGateway.getSupportedCurrencyList
   });
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
+  const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
   useEffect(() => {
-    setSelectedCurrency(currencyCode);
+    setSelectedCurrency(SessionGateway.getSession().currencyCode);
   }, []);
 
-  const onSelectCurrency = useCallback((currencyCode: string) => {
-    setSelectedCurrency(currencyCode);
-    SessionGateway.setSessionValue('currencyCode', currencyCode);
+  const onSelectCurrency = useCallback((currency: string) => {
+    setSelectedCurrency(currency);
+    SessionGateway.setSessionValue('currencyCode', currency);
   }, []);
 
-  const currencyCodeList = currencyCodeListUnsorted.sort();
+  const currencyCodeList = useMemo(
+    () => [...currencyCodeListUnsorted].sort(),
+    [currencyCodeListUnsorted]
+  );
 
   const value = useMemo(
       () => ({
