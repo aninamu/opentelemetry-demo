@@ -45,7 +45,7 @@ const ProductDetail: NextPage = () => {
       picture,
       description,
       priceUsd = { units: 0, currencyCode: 'USD', nanos: 0 },
-      categories,
+      categories = [],
     } = {} as Product,
   } = useQuery({
       queryKey: ['product', productId, 'selectedCurrency', selectedCurrency],

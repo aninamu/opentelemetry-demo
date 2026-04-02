@@ -19,7 +19,7 @@ const Cart: NextPage = () => {
   return (
     <AdProvider
       productIds={items.map(({ productId }) => productId)}
-      contextKeys={[...new Set(items.flatMap(({ product }) => product.categories))]}
+      contextKeys={[...new Set(items.flatMap(({ product }) => product?.categories ?? []))]}
     >
       <Head>
         <title>Otel Demo - Cart</title>

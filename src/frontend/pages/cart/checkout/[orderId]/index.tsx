@@ -18,7 +18,20 @@ import { IProductCheckout } from '../../../../types/Cart';
 
 const Checkout: NextPage = () => {
   const { query } = useRouter();
-  const { orderId, items = [], shippingAddress, shippingCost = { units: 0, currencyCode: 'USD', nanos: 0 } } = JSON.parse((query.order || '{}') as string) as IProductCheckout;
+  const parsedOrder = useMemo(() => {
+    try {
+      return JSON.parse((query.order || '{}') as string) as IProductCheckout;
+    } catch {
+      return {} as Partial<IProductCheckout>;
+    }
+  }, [query.order]);
+
+  const {
+    orderId,
+    items = [],
+    shippingAddress,
+    shippingCost = { units: 0, currencyCode: 'USD', nanos: 0 },
+  } = parsedOrder;
 
   const orderTotal = useMemo<Money>(() => {
     const itemsTotal = items.reduce((acc, { item, cost = { units: 0, nanos: 0, currencyCode: 'USD' } }) => {
@@ -42,7 +55,7 @@ const Checkout: NextPage = () => {
   return (
     <AdProvider
       productIds={items.map(({ item }) => item?.productId || '')}
-      contextKeys={[...new Set(items.flatMap(({ item }) => item.product.categories))]}
+      contextKeys={[...new Set(items.flatMap(({ item }) => item?.product?.categories ?? []))]}
     >
       <Head>
         <title>Otel Demo - Checkout</title>
@@ -61,9 +74,11 @@ const Checkout: NextPage = () => {
 
             <S.RightColumn>
               <S.SectionTitle>Shipping Address</S.SectionTitle>
-              <S.AddressText>{shippingAddress.streetAddress}</S.AddressText>
-              <S.AddressText>{shippingAddress.city}, {shippingAddress.state} {shippingAddress.zipCode}</S.AddressText>
-              <S.AddressText>{shippingAddress.country}</S.AddressText>
+              <S.AddressText>{shippingAddress?.streetAddress}</S.AddressText>
+              <S.AddressText>
+                {shippingAddress?.city}, {shippingAddress?.state} {shippingAddress?.zipCode}
+              </S.AddressText>
+              <S.AddressText>{shippingAddress?.country}</S.AddressText>
             </S.RightColumn>
 
             <S.ItemsSection>
