@@ -56,9 +56,15 @@ const CheckoutForm = ({ onSubmit }: IProps) => {
   });
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setFormData(formData => ({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]:
+        name === 'creditCardCvv' ||
+        name === 'creditCardExpirationMonth' ||
+        name === 'creditCardExpirationYear'
+          ? Number(value)
+          : value,
     }));
   }, []);
 
@@ -161,7 +167,7 @@ const CheckoutForm = ({ onSubmit }: IProps) => {
           <option value="9">September</option>
           <option value="10">October</option>
           <option value="11">November</option>
-          <option value="12">January</option>
+          <option value="12">December</option>
         </Input>
         <Input
           label="Year"
