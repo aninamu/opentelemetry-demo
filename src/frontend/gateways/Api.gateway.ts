@@ -8,18 +8,20 @@ import { AttributeNames } from '../utils/enums/AttributeNames';
 import SessionGateway from './Session.gateway';
 import { context, propagation } from "@opentelemetry/api";
 
-const { userId } = SessionGateway.getSession();
-
 const basePath = '/api';
+
+const getSessionUserId = () => SessionGateway.getSession().userId;
 
 const Apis = () => ({
   getCart(currencyCode: string) {
+    const userId = getSessionUserId();
     return request<IProductCart>({
       url: `${basePath}/cart`,
       queryParams: { sessionId: userId, currencyCode },
     });
   },
   addCartItem({ currencyCode, ...item }: CartItem & { currencyCode: string }) {
+    const userId = getSessionUserId();
     return request<Cart>({
       url: `${basePath}/cart`,
       body: { item, userId },
@@ -28,6 +30,7 @@ const Apis = () => ({
     });
   },
   emptyCart() {
+    const userId = getSessionUserId();
     return request<undefined>({
       url: `${basePath}/cart`,
       method: 'DELETE',
@@ -53,11 +56,12 @@ const Apis = () => ({
   },
 
   placeOrder({ currencyCode, ...order }: PlaceOrderRequest & { currencyCode: string }) {
+    const userId = getSessionUserId();
     return request<IProductCheckout>({
       url: `${basePath}/checkout`,
       method: 'POST',
       queryParams: { currencyCode },
-      body: order,
+      body: { ...order, userId },
     });
   },
 
@@ -91,6 +95,7 @@ const Apis = () => ({
     });
   },
   listRecommendations(productIds: string[], currencyCode: string) {
+    const userId = getSessionUserId();
     return request<Product[]>({
       url: `${basePath}/recommendations`,
       queryParams: {
@@ -123,6 +128,7 @@ const ApiGateway = new Proxy(Apis(), {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return function (...args: any[]) {
+      const userId = getSessionUserId();
       const baggage = propagation.getActiveBaggage() || propagation.createBaggage();
       const newBaggage = baggage.setEntry(AttributeNames.SESSION_ID, { value: userId });
       const newContext = propagation.setBaggage(context.active(), newBaggage);

@@ -33,28 +33,30 @@ const ProductDetail: NextPage = () => {
     cart: { items },
   } = useCart();
   const { selectedCurrency } = useCurrency();
-  const productId = query.productId as string;
+  const productId = typeof query.productId === 'string' ? query.productId : '';
 
   useEffect(() => {
     setQuantity(1);
   }, [productId]);
 
+  const { data: product } = useQuery<Product>({
+    queryKey: ['product', productId, 'selectedCurrency', selectedCurrency],
+    queryFn: () => ApiGateway.getProduct(productId, selectedCurrency),
+    enabled: !!productId,
+  });
+
   const {
-    data: {
-      name,
-      picture,
-      description,
-      priceUsd = { units: 0, currencyCode: 'USD', nanos: 0 },
-      categories,
-    } = {} as Product,
-  } = useQuery({
-      queryKey: ['product', productId, 'selectedCurrency', selectedCurrency],
-      queryFn: () => ApiGateway.getProduct(productId, selectedCurrency),
-      enabled: !!productId,
-    }
-  ) as { data: Product };
+    name = '',
+    picture = '',
+    description = '',
+    priceUsd = { units: 0, currencyCode: 'USD', nanos: 0 },
+    categories = [],
+  } = product || {};
 
   const onAddItem = useCallback(async () => {
+    if (!productId) {
+      return;
+    }
     await addItem({
       productId,
       quantity,

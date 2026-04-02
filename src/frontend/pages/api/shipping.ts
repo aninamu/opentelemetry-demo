@@ -13,8 +13,17 @@ const handler = async ({ method, query }: NextApiRequest, res: NextApiResponse<T
   switch (method) {
     case 'GET': {
       const { itemList = '', currencyCode = 'USD', address = '' } = query;
-      const { costUsd } = await ShippingGateway.getShippingCost(JSON.parse(itemList as string) as CartItem[],
-          JSON.parse(address as string) as Address);
+      let parsedItemList: CartItem[];
+      let parsedAddress: Address;
+
+      try {
+        parsedItemList = JSON.parse(itemList as string) as CartItem[];
+        parsedAddress = JSON.parse(address as string) as Address;
+      } catch {
+        return res.status(400).send('');
+      }
+
+      const { costUsd } = await ShippingGateway.getShippingCost(parsedItemList, parsedAddress);
       const cost = await CurrencyGateway.convert(costUsd!, currencyCode as string);
 
       return res.status(200).json(cost!);

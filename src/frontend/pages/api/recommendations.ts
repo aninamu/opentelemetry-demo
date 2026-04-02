@@ -13,9 +13,14 @@ const handler = async ({ method, query }: NextApiRequest, res: NextApiResponse<T
   switch (method) {
     case 'GET': {
       const { productIds = [], sessionId = '', currencyCode = '' } = query;
+      const normalizedProductIds = Array.isArray(productIds)
+        ? productIds
+        : typeof productIds === 'string' && productIds.length > 0
+          ? productIds.split(',')
+          : [];
       const { productIds: productList } = await RecommendationsGateway.listRecommendations(
         sessionId as string,
-        productIds as string[]
+        normalizedProductIds
       );
       const recommendedProductList = await Promise.all(
         productList.slice(0, 4).map(id => ProductCatalogService.getProduct(id, currencyCode as string))

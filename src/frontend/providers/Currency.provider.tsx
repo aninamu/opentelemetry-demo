@@ -31,7 +31,7 @@ const CurrencyProvider = ({ children }: IProps) => {
     queryKey: ['currency'],
     queryFn: ApiGateway.getSupportedCurrencyList
   });
-  const [selectedCurrency, setSelectedCurrency] = useState<string>('');
+  const [selectedCurrency, setSelectedCurrency] = useState<string>(currencyCode);
 
   useEffect(() => {
     setSelectedCurrency(currencyCode);

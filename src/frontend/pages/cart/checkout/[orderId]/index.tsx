@@ -18,13 +18,33 @@ import { IProductCheckout } from '../../../../types/Cart';
 
 const Checkout: NextPage = () => {
   const { query } = useRouter();
-  const { orderId, items = [], shippingAddress, shippingCost = { units: 0, currencyCode: 'USD', nanos: 0 } } = JSON.parse((query.order || '{}') as string) as IProductCheckout;
+  const parsedOrder = useMemo(() => {
+    const order = Array.isArray(query.order) ? query.order[0] : query.order;
+    if (!order) {
+      return {};
+    }
+
+    try {
+      return JSON.parse(order);
+    } catch {
+      return {};
+    }
+  }, [query.order]);
+
+  const {
+    orderId = '',
+    items = [],
+    shippingAddress = { streetAddress: '', city: '', state: '', country: '', zipCode: '' },
+    shippingCost = { units: 0, currencyCode: 'USD', nanos: 0 },
+  } = parsedOrder as Partial<IProductCheckout>;
+  const safeItems = Array.isArray(items) ? items : [];
 
   const orderTotal = useMemo<Money>(() => {
-    const itemsTotal = items.reduce((acc, { item, cost = { units: 0, nanos: 0, currencyCode: 'USD' } }) => {
+    const itemsTotal = safeItems.reduce((acc, { item, cost = { units: 0, nanos: 0, currencyCode: 'USD' } }) => {
+      const quantity = item?.quantity || 0;
       return {
-        units: acc.units + (cost.units || 0) * item.quantity,
-        nanos: acc.nanos + (cost.nanos || 0) * item.quantity,
+        units: acc.units + (cost.units || 0) * quantity,
+        nanos: acc.nanos + (cost.nanos || 0) * quantity,
         currencyCode: cost.currencyCode || 'USD',
       };
     }, { units: 0, nanos: 0, currencyCode: 'USD' });
@@ -37,12 +57,12 @@ const Checkout: NextPage = () => {
       nanos: totalNanos % 1000000000,
       currencyCode: shippingCost.currencyCode || 'USD',
     };
-  }, [items, shippingCost]);
+  }, [safeItems, shippingCost]);
 
   return (
     <AdProvider
-      productIds={items.map(({ item }) => item?.productId || '')}
-      contextKeys={[...new Set(items.flatMap(({ item }) => item.product.categories))]}
+      productIds={safeItems.map(({ item }) => item?.productId || '')}
+      contextKeys={[...new Set(safeItems.flatMap(({ item }) => item?.product?.categories || []))]}
     >
       <Head>
         <title>Otel Demo - Checkout</title>
@@ -69,10 +89,15 @@ const Checkout: NextPage = () => {
             <S.ItemsSection>
               <S.SectionTitle>Order Items</S.SectionTitle>
               <S.ItemList>
-                {items.map(({ item, cost = { units: 0, currencyCode: 'USD', nanos: 0 } }) => {
+                {safeItems.map(({ item, cost = { units: 0, currencyCode: 'USD', nanos: 0 } }, index) => {
+                  if (!item?.product) {
+                    return null;
+                  }
+
+                  const quantity = item.quantity || 0;
                   const itemTotal: Money = {
-                    units: (cost.units || 0) * item.quantity,
-                    nanos: (cost.nanos || 0) * item.quantity,
+                    units: (cost.units || 0) * quantity,
+                    nanos: (cost.nanos || 0) * quantity,
                     currencyCode: cost.currencyCode || 'USD',
                   };
                   // Handle nanos overflow
@@ -81,11 +106,11 @@ const Checkout: NextPage = () => {
                   itemTotal.nanos = itemTotal.nanos % 1000000000;
 
                   return (
-                    <S.OrderItem key={item.productId}>
-                      <S.ItemImage src={"/images/products/" + item.product.picture} alt={item.product.name}/>
+                    <S.OrderItem key={`${item.productId || 'item'}-${index}`}>
+                      <S.ItemImage src={"/images/products/" + (item.product.picture || '')} alt={item.product.name || 'product'} />
                       <S.ItemDetails>
                         <S.ItemName>{item.product.name}</S.ItemName>
-                        <S.ItemQuantity>Quantity: {item.quantity}</S.ItemQuantity>
+                        <S.ItemQuantity>Quantity: {quantity}</S.ItemQuantity>
                       </S.ItemDetails>
                       <S.ItemPrice>
                         <ProductPrice price={itemTotal} />
