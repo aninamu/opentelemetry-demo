@@ -4,26 +4,32 @@
 
 ### Overview
 
-This is the **OpenTelemetry Astronomy Shop Demo** — a polyglot microservice-based e-commerce application with 15+ services in 11 languages. All services are orchestrated via Docker Compose. See `README.md` and `CONTRIBUTING.md` for general docs.
+This is the **OpenTelemetry Astronomy Shop Demo**, a polyglot
+microservice-based e-commerce app with 15+ services in 11
+languages. All services run via Docker Compose. See `README.md`
+and `CONTRIBUTING.md` for general docs.
 
 ### Running the Application
 
-- **Start (full):** `make start` → http://localhost:8080
-- **Start (minimal):** `make start-minimal` → fewer services, lower resource usage
+- **Start (full):** `make start`
+- **Start (minimal):** `make start-minimal`
 - **Stop:** `make stop`
-- **Restart a single service:** `make restart service=<name>`
-- **Rebuild + restart a service:** `make redeploy service=<name>`
+- **Restart one service:** `make restart service=<name>`
+- **Rebuild + restart:** `make redeploy service=<name>`
+- Web UI at <http://localhost:8080> after starting.
 
 ### Cgroup v2 Workaround (Cloud Agent VMs)
 
-Docker must be started with `cgroupfs` driver instead of systemd due to cgroup v2 threading constraints in the Cloud Agent VM:
+Docker must use the `cgroupfs` driver due to cgroup v2
+threading constraints in Cloud Agent VMs:
 
 ```json
-// /etc/docker/daemon.json
 {"storage-driver": "fuse-overlayfs", "exec-opts": ["native.cgroupdriver=cgroupfs"]}
 ```
 
-Because `deploy.resources.limits.memory` in docker-compose files triggers cgroup errors, you must strip memory limits before starting. Use:
+The `deploy.resources.limits.memory` directives in the
+docker-compose files trigger cgroup errors. Strip memory
+limits before starting:
 
 ```bash
 python3 -c "
@@ -38,29 +44,40 @@ for f in ['docker-compose.yml', 'docker-compose.minimal.yml']:
 "
 ```
 
-Then use `-f docker-compose.minimal.no-limits.yml` instead of `-f docker-compose.minimal.yml`.
+Then use the generated `.no-limits.yml` file instead.
 
 ### Network Restrictions
 
-- `quay.io` is blocked in Cloud Agent VMs. Prometheus (hosted on quay.io) cannot be pulled. As a workaround, pull from Docker Hub (`prom/prometheus:<version>`) and re-tag: `docker tag prom/prometheus:v3.0.0 quay.io/prometheus/prometheus:v3.9.1`
-- `grafana.com` is blocked, so Grafana fails to install the `grafana-opensearch-datasource` plugin and will keep restarting. Both Prometheus and Grafana are optional observability services — the core shop works without them.
+- `quay.io` is blocked. Prometheus cannot be pulled.
+  Workaround: pull from Docker Hub and re-tag, e.g.
+  `docker tag prom/prometheus:v3.0.0 quay.io/...`
+- `grafana.com` is blocked, so Grafana cannot install
+  plugins and will keep restarting.
+- Both Prometheus and Grafana are optional observability
+  services. The core shop works without them.
 
 ### Pre-built Images vs Source
 
-The pre-built images on `ghcr.io/open-telemetry/demo:latest-*` may not match the current repo source code. If Envoy (frontend-proxy) fails with validation errors about empty addresses, rebuild it from source:
+Pre-built images on `ghcr.io/open-telemetry/demo:latest-*`
+may not match the repo source. If Envoy (frontend-proxy)
+fails with validation errors about empty addresses,
+rebuild from source:
 
 ```bash
-docker compose --env-file .env --env-file .env.override -f <compose-file> build frontend-proxy
+docker compose --env-file .env --env-file .env.override \
+  -f <compose-file> build frontend-proxy
 ```
 
 ### Lint and Checks
 
-- `make misspell` — spell check all markdown docs
-- `make markdownlint` — lint all markdown docs
-- `make checklicense` — verify Apache 2.0 license headers
-- `make check` — runs all of the above plus link checking
-- These require `npm install` and Go tooling (`make install-tools`).
+- `make misspell` -- spell check all markdown docs
+- `make markdownlint` -- lint all markdown docs
+- `make checklicense` -- verify Apache 2.0 license headers
+- `make check` -- runs all of the above plus link checking
+- Requires `npm install` and `make install-tools`.
 
 ### Tests
 
-- `make run-tests` — runs Cypress frontend tests and Tracetest trace-based tests via Docker Compose (requires all services running)
+- `make run-tests` -- Cypress frontend tests and Tracetest
+  trace-based tests via Docker Compose (requires all
+  services running)
