@@ -11,6 +11,10 @@
 
 docker-compose.override.yml
 
+# Generated no-limits compose files for Cloud Agent VMs
+docker-compose.no-limits.yml
+docker-compose.minimal.no-limits.yml
+
 # Eclipse
 .classpath
 .project
