@@ -39,7 +39,7 @@ docker build --file ./src/ad-go/Dockerfile ./
 ## Environment Variables
 
 | Variable | Description | Default |
-|----------|-------------|---------|
+| -------- | ----------- | ------- |
 | `AD_PORT` | Port the gRPC server listens on | Required |
 | `FLAGD_HOST` | Host for the flagd feature flag service | `flagd` |
 | `FLAGD_PORT` | Port for the flagd feature flag service | `8013` |
@@ -59,10 +59,12 @@ The service supports the following feature flags via flagd:
 The service is instrumented with OpenTelemetry for:
 
 - **Tracing**: gRPC server spans, custom spans for `getRandomAds` and `getAdsByCategory`
-- **Metrics**: `app.ads.ad_requests` counter with `ad_request_type` and `ad_response_type` attributes
+- **Metrics**: `app.ads.ad_requests` counter with `ad_request_type` and
+  `ad_response_type` attributes
 - **Logging**: Structured logging via `otelslog`
 
 Span attributes include:
+
 - `app.ads.contextKeys` - The context keys from the request
 - `app.ads.count` - Number of ads returned
 - `app.ads.ad_request_type` - TARGETED or NOT_TARGETED
