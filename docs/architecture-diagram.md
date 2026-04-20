@@ -188,7 +188,7 @@ flowchart TB
 ## Service Details
 
 | Service | Language | Port | Description |
-|---------|----------|------|-------------|
+| --- | --- | --- | --- |
 | **Frontend** | TypeScript/Next.js | 8080 | Web UI for the astronomy shop |
 | **Frontend Proxy** | Envoy | 8080 | API gateway and reverse proxy |
 | **Cart** | C# (.NET) | 7070 | Shopping cart management |
@@ -210,24 +210,28 @@ flowchart TB
 ## Data Flow
 
 ### Shopping Flow
-1. User browses products via **Frontend** → **Product Catalog**
-2. User adds items to cart via **Frontend** → **Cart** → **Valkey**
-3. User gets recommendations via **Frontend** → **Recommendation** → **Product Catalog**
-4. User checks out via **Frontend** → **Checkout**:
+
+1. User browses products via **Frontend** -> **Product Catalog**
+2. User adds items to cart via **Frontend** -> **Cart** -> **Valkey**
+3. User gets recommendations via **Frontend** ->
+    **Recommendation** -> **Product Catalog**
+4. User checks out via **Frontend** -> **Checkout**:
    - Retrieves cart from **Cart**
    - Gets product info from **Product Catalog**
    - Converts currency via **Currency**
-   - Calculates shipping via **Shipping** → **Quote**
+   - Calculates shipping via **Shipping** -> **Quote**
    - Processes payment via **Payment**
    - Sends confirmation via **Email**
    - Publishes order event to **Kafka**
 
 ### Async Processing
+
 - **Checkout** publishes order events to **Kafka**
-- **Accounting** consumes events for financial records → **PostgreSQL**
+- **Accounting** consumes events for financial records -> **PostgreSQL**
 - **Fraud Detection** consumes events for fraud analysis
 
 ### Observability Flow
+
 - All services export telemetry (traces, metrics, logs) to **OTel Collector**
 - **OTel Collector** routes data to:
   - **Jaeger** for distributed tracing
@@ -238,7 +242,7 @@ flowchart TB
 ## Technology Stack
 
 | Category | Technologies |
-|----------|--------------|
+| --- | --- |
 | **Languages** | TypeScript, Go, Python, Java, C#, Ruby, Rust, C++, PHP, Kotlin |
 | **Frameworks** | Next.js, ASP.NET, gRPC, Locust |
 | **Databases** | PostgreSQL, Valkey (Redis) |
