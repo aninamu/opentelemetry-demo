@@ -47,6 +47,12 @@ your preferred deployment method:
 - [Docker](https://opentelemetry.io/docs/demo/docker_deployment/)
 - [Kubernetes](https://opentelemetry.io/docs/demo/kubernetes_deployment/)
 
+## Architecture
+
+A repo-local architecture diagram showing the microservice topology,
+telemetry pipeline, and data stores is available at
+[`docs/architecture.md`](./docs/architecture.md).
+
 ## Documentation
 
 For detailed documentation, see [Demo Documentation][docs]. If you're curious
