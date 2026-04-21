@@ -143,6 +143,7 @@ const ProductReviews = () => {
 
       <S.TitleContainer>
         <S.Title>Customer Reviews</S.Title>
+        <S.TitleTagline>Testimonials from Sundry Observers &amp; Amateur Astronomers</S.TitleTagline>
       </S.TitleContainer>
 
         {loading && <p>Loading product reviews…</p>}

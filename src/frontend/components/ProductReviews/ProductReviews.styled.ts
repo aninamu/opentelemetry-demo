@@ -11,13 +11,34 @@ export const ProductReviews = styled.section`
 `;
 
 export const TitleContainer = styled.div`
-  border-top: 1px dashed;
-  padding: 40px 0;
+  border-top: 3px double ${({ theme }) => theme.colors.rule};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.rule};
+  padding: 24px 0 16px;
+  margin: 16px 0 24px;
   text-align: center;
   width: 100%;
+  position: relative;
+
+  &::before {
+    content: '\u2766';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: ${({ theme }) => theme.colors.parchmentDeep};
+    padding: 0 12px;
+    color: ${({ theme }) => theme.colors.rule};
+    font-size: 18px;
+    font-family: ${({ theme }) => theme.fonts.display};
+  }
 `;
 
 export const Title = styled.h3`
+  font-family: ${({ theme }) => theme.fonts.display};
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+  color: ${({ theme }) => theme.colors.ink};
   font-size: ${({ theme }) => theme.sizes.mLarge};
 
   ${({ theme }) => theme.breakpoints.desktop} {
@@ -25,14 +46,21 @@ export const Title = styled.h3`
   }
 `;
 
+export const TitleTagline = styled.p`
+  margin: 6px 0 0;
+  font-style: italic;
+  color: ${({ theme }) => theme.colors.textLightGray};
+  font-size: ${({ theme }) => theme.sizes.mMedium};
+`;
+
 /* Summary card at the top */
 export const SummaryCard = styled.section`
   width: 100%;
   padding: 20px;
   margin: 0 20px 24px;
-  border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.white};
+  border: 2px solid ${({ theme }) => theme.colors.rule};
+  background: ${({ theme }) => theme.colors.parchment};
+  box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.parchment}, inset 0 0 0 2px ${({ theme }) => theme.colors.rule};
   display: grid;
   gap: 16px;
 
@@ -50,13 +78,15 @@ export const AverageBlock = styled.div`
 `;
 
 export const AverageScoreBadge = styled.div`
-  min-width: 64px;
-  height: 64px;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.otelBlue};
-  color: ${({ theme }) => theme.colors.white};
+  min-width: 72px;
+  height: 72px;
+  border: 2px solid ${({ theme }) => theme.colors.rule};
+  box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.parchment}, inset 0 0 0 2px ${({ theme }) => theme.colors.rule};
+  background: ${({ theme }) => theme.colors.parchmentDeep};
+  color: ${({ theme }) => theme.colors.ink};
+  font-family: ${({ theme }) => theme.fonts.display};
   font-weight: 700;
-  font-size: 24px;
+  font-size: 28px;
   display: grid;
   place-items: center;
 `;
@@ -92,8 +122,8 @@ export const ScoreLabel = styled.span`
 export const ScoreBar = styled.div`
   position: relative;
   height: 10px;
-  border-radius: 6px;
-  background: ${({ theme }) => theme.colors.lightBorderGray};
+  border: 1px solid ${({ theme }) => theme.colors.rule};
+  background: ${({ theme }) => theme.colors.parchmentDeep};
   overflow: hidden;
 `;
 
@@ -102,7 +132,13 @@ export const ScoreBarFill = styled.div`
   left: 0;
   top: 0;
   height: 100%;
-  background: ${({ theme }) => theme.colors.otelBlue};
+  background: repeating-linear-gradient(
+    45deg,
+    ${({ theme }) => theme.colors.rule},
+    ${({ theme }) => theme.colors.rule} 3px,
+    ${({ theme }) => theme.colors.ink} 3px,
+    ${({ theme }) => theme.colors.ink} 6px
+  );
 `;
 
 export const ScorePct = styled.span`
@@ -133,12 +169,14 @@ export const ReviewsGrid = styled.ul`
 `;
 
 export const ReviewCard = styled.li`
-  border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.rule};
+  background: ${({ theme }) => theme.colors.parchment};
   padding: 16px;
   display: grid;
   gap: 12px;
+  box-shadow:
+    inset 0 0 0 3px ${({ theme }) => theme.colors.parchment},
+    inset 0 0 0 4px ${({ theme }) => theme.colors.rule};
 `;
 
 export const ReviewHeader = styled.div`
@@ -148,7 +186,11 @@ export const ReviewHeader = styled.div`
 `;
 
 export const ReviewerName = styled.strong`
+  font-family: ${({ theme }) => theme.fonts.display};
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   font-weight: 600;
+  color: ${({ theme }) => theme.colors.ink};
 `;
 
 export const ReviewBody = styled.p`
@@ -160,17 +202,20 @@ export const AskAISection = styled.section`
   width: 100%;
   padding: 20px;
   margin: 0 20px 24px;
-  border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.white};
+  border: 2px solid ${({ theme }) => theme.colors.rule};
+  box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.parchment}, inset 0 0 0 2px ${({ theme }) => theme.colors.rule};
+  background: ${({ theme }) => theme.colors.parchment};
   display: grid;
   gap: 12px;
 `;
 
 export const AskAIHeader = styled.h4`
   margin: 0;
+  font-family: ${({ theme }) => theme.fonts.display};
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   font-size: ${({ theme }) => theme.sizes.mLarge};
-  color: ${({ theme }) => theme.colors.otelGray};
+  color: ${({ theme }) => theme.colors.ink};
 
   ${({ theme }) => theme.breakpoints.desktop} {
     font-size: ${({ theme }) => theme.sizes.dMedium};
@@ -189,16 +234,16 @@ export const AskAIInput = styled.input`
   flex: 1;
   min-width: 0;
   padding: 10px 12px;
-  border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 6px;
+  border: 1px solid ${({ theme }) => theme.colors.rule};
+  font-family: ${({ theme }) => theme.fonts.body};
   font-size: 16px;
   outline: none;
   background: ${({ theme }) => theme.colors.white};
-  color: ${({ theme }) => theme.colors.otelGray};
+  color: ${({ theme }) => theme.colors.ink};
 
   &:focus {
-    border-color: ${({ theme }) => theme.colors.otelBlue};
-    box-shadow: 0 0 0 3px rgba(0, 112, 201, 0.15);
+    border-color: ${({ theme }) => theme.colors.ink};
+    box-shadow: 0 0 0 3px rgba(92, 74, 61, 0.25);
   }
 `;
 
@@ -211,15 +256,18 @@ export const AskAIControls = styled.div`
 
 export const QuickPromptButton = styled.button`
   padding: 8px 12px;
-  border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 6px;
-  background: ${({ theme }) => theme.colors.white};
-  color: ${({ theme }) => theme.colors.otelGray};
-  font-size: 14px;
+  border: 1px solid ${({ theme }) => theme.colors.rule};
+  background: ${({ theme }) => theme.colors.parchmentDeep};
+  color: ${({ theme }) => theme.colors.ink};
+  font-family: ${({ theme }) => theme.fonts.display};
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
   cursor: pointer;
 
   &:hover {
-    border-color: ${({ theme }) => theme.colors.otelBlue};
+    background: ${({ theme }) => theme.colors.parchment};
+    box-shadow: 0 0 0 2px ${({ theme }) => theme.colors.parchment}, 0 0 0 3px ${({ theme }) => theme.colors.rule};
   }
 
   &:disabled {
@@ -230,16 +278,19 @@ export const QuickPromptButton = styled.button`
 
 export const AskAIButton = styled.button`
   padding: 8px 16px;
-  border: none;
-  border-radius: 6px;
-  background: ${({ theme }) => theme.colors.otelBlue};
-  color: ${({ theme }) => theme.colors.white};
-  font-size: 14px;
+  border: 2px solid ${({ theme }) => theme.colors.rule};
+  background: ${({ theme }) => theme.colors.parchment};
+  color: ${({ theme }) => theme.colors.ink};
+  font-family: ${({ theme }) => theme.fonts.display};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+  box-shadow: inset 0 0 0 1px ${({ theme }) => theme.colors.parchment}, inset 0 0 0 2px ${({ theme }) => theme.colors.rule};
 
   &:hover {
-    filter: brightness(1.05);
+    background: ${({ theme }) => theme.colors.parchmentDeep};
   }
 
   &:disabled {
@@ -251,5 +302,6 @@ export const AskAIButton = styled.button`
 export const AIMessage = styled.p`
   margin: 0;
   line-height: 1.5;
-  color: ${({ theme }) => theme.colors.otelGray};
+  font-style: italic;
+  color: ${({ theme }) => theme.colors.ink};
 `;

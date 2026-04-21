@@ -5,16 +5,22 @@ import { DefaultTheme } from 'styled-components';
 
 const Theme: DefaultTheme = {
   colors: {
-    otelBlue: '#5262A8',
-    otelYellow: '#EAAA3B',
-    otelGray: '#403F4B',
-    otelRed: '#FB7181',
-    backgroundGray: 'rgba(64, 63, 75, 0.1)',
-    lightBorderGray: 'rgba(82, 98, 168, 0.3)',
-    borderGray: '#2E2437',
-    textGray: '#29293E',
-    textLightGray: '#78788C',
-    white: '#FFFFFF',
+    // Almanac-era palette (parchment, sepia ink, colonial accents)
+    otelBlue: '#3a4f6e',
+    otelYellow: '#c9a968',
+    otelGray: '#3a2e26',
+    otelRed: '#a63d2d',
+    backgroundGray: 'rgba(58, 46, 38, 0.09)',
+    lightBorderGray: 'rgba(58, 46, 38, 0.22)',
+    borderGray: '#5c4a3d',
+    textGray: '#2a2118',
+    textLightGray: '#6e5c4d',
+    white: '#faf6ec',
+    parchment: '#f1e7cf',
+    parchmentDeep: '#e6d8b6',
+    ink: '#2a2118',
+    inkFaded: 'rgba(42, 33, 24, 0.6)',
+    rule: '#5c4a3d',
   },
   breakpoints: {
     desktop: '@media (min-width: 768px)',
@@ -31,10 +37,12 @@ const Theme: DefaultTheme = {
     nano: '8px',
   },
   fonts: {
-    bold: '800',
+    bold: '700',
     regular: '500',
-    semiBold: '700',
+    semiBold: '600',
     light: '400',
+    display: "'IM Fell English SC', 'EB Garamond', Georgia, serif",
+    body: "'EB Garamond', Georgia, 'Times New Roman', serif",
   },
 };
 

@@ -8,7 +8,7 @@ export const Cart = styled.div`
   margin: 24px;
 
   ${({ theme }) => theme.breakpoints.desktop} {
-    margin: 100px;
+    margin: 80px 100px;
   }
 `;
 
@@ -20,14 +20,20 @@ export const Container = styled.div`
 
 export const CarTitle = styled.h1`
   margin: 0;
+  font-family: ${({ theme }) => theme.fonts.display};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.ink};
 `;
 
 export const Header = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 32px;
   display: flex;
   flex-direction: column;
   gap: 5px;
   align-items: start;
+  padding-bottom: 16px;
+  border-bottom: 3px double ${({ theme }) => theme.colors.rule};
 
   ${({ theme }) => theme.breakpoints.desktop} {
     flex-direction: row;
@@ -39,6 +45,10 @@ export const Header = styled.div`
 export const Title = styled.h1`
   text-align: center;
   margin: 0;
+  font-family: ${({ theme }) => theme.fonts.display};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.ink};
   font-size: ${({ theme }) => theme.sizes.mLarge};
 
   ${({ theme }) => theme.breakpoints.desktop} {
@@ -49,6 +59,8 @@ export const Title = styled.h1`
 export const Subtitle = styled.h3`
   text-align: center;
   margin: 0;
+  font-style: italic;
+  font-weight: ${({ theme }) => theme.fonts.regular};
   font-size: ${({ theme }) => theme.sizes.mMedium};
   color: ${({ theme }) => theme.colors.textLightGray};
 

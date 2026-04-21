@@ -16,6 +16,11 @@ declare module 'styled-components' {
       textGray: string; 
       textLightGray: string;
       white: string;
+      parchment: string;
+      parchmentDeep: string;
+      ink: string;
+      inkFaded: string;
+      rule: string;
     };
     sizes: {
       mLarge: string;
@@ -36,6 +41,8 @@ declare module 'styled-components' {
       regular: string;
       semiBold: string;
       light: string;
+      display: string;
+      body: string;
     };
   }
 }

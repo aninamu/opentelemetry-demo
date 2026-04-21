@@ -6,54 +6,42 @@ import Button from '../Button';
 
 export const Banner = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  padding: 24px 16px;
 
   ${({ theme }) => theme.breakpoints.desktop} {
-    flex-direction: row-reverse;
-    padding-bottom: 38px;
-    background: ${({ theme }) => theme.colors.backgroundGray};
+    padding: 48px 40px 72px;
   }
 `;
 
-export const BannerImg = styled.img.attrs({
-  src: '/images/Banner.png',
-})`
+export const FrameWrap = styled.div`
   width: 100%;
-  height: auto;
-`;
+  max-width: 560px;
 
-export const ImageContainer = styled.div`
   ${({ theme }) => theme.breakpoints.desktop} {
-    min-width: 50%;
+    max-width: 680px;
   }
 `;
 
-export const TextContainer = styled.div`
-  padding: 20px;
+export const ButtonRow = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
 
-  ${({ theme }) => theme.breakpoints.desktop} {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: start;
-    width: 50%;
-    padding: 100px 160px 100px 100px;
-  }
-`;
-
-export const Title = styled.h1`
-  font-size: ${({ theme }) => theme.sizes.mxLarge};
-  font-weight: ${({ theme }) => theme.fonts.bold};
-
-  ${({ theme }) => theme.breakpoints.desktop} {
-    font-size: ${({ theme }) => theme.sizes.dxLarge};
+  a {
+    text-decoration: none;
   }
 `;
 
 export const GoShoppingButton = styled(Button)`
-  width: 100%;
+  min-width: 220px;
+`;
 
-  ${({ theme }) => theme.breakpoints.desktop} {
-    width: auto;
-  }
+export const Signature = styled.p`
+  margin: 18px 0 0 0;
+  text-align: center;
+  font-family: ${({ theme }) => theme.fonts.display};
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: ${({ theme }) => theme.colors.rule};
 `;

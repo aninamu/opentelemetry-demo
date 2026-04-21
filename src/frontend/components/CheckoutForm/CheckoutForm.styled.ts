@@ -15,6 +15,15 @@ export const StateRow = styled.div`
 export const Title = styled.h1`
   margin: 0;
   margin-bottom: 24px;
+  font-family: ${({ theme }) => theme.fonts.display};
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: ${({ theme }) => theme.colors.ink};
+  font-size: ${({ theme }) => theme.sizes.mLarge};
+
+  ${({ theme }) => theme.breakpoints.desktop} {
+    font-size: ${({ theme }) => theme.sizes.dLarge};
+  }
 `;
 
 export const CardRow = styled.div`
@@ -39,7 +48,7 @@ export const SubmitContainer = styled.div`
 `;
 
 export const CartButton = styled(Button)`
-  padding: 16px 35px;
+  padding: 14px 35px;
   font-weight: ${({ theme }) => theme.fonts.regular};
   width: 100%;
 

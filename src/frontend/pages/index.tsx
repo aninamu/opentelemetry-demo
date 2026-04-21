@@ -9,6 +9,7 @@ import * as S from '../styles/Home.styled';
 import { useQuery } from '@tanstack/react-query';
 import ApiGateway from '../gateways/Api.gateway';
 import Banner from '../components/Banner';
+import { Fleuron } from '../components/Almanac';
 import { CypressFields } from '../utils/enums/CypressFields';
 import { useCurrency } from '../providers/Currency.provider';
 
@@ -30,9 +31,14 @@ const Home: NextPage = () => {
           <S.Row>
             <S.Content>
               <S.HotProducts>
+                <Fleuron />
                 <S.HotProductsTitle data-cy={CypressFields.HotProducts} id="hot-products">
                   Hot Products
                 </S.HotProductsTitle>
+                <S.HotProductsTagline>
+                  Wares Most in Demand by Astronomers &amp; Natural Philosophers
+                </S.HotProductsTagline>
+                <Fleuron glyph="&#10086;" />
                 <ProductList productList={productList} />
               </S.HotProducts>
             </S.Content>
