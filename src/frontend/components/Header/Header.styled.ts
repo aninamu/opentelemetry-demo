@@ -5,16 +5,18 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 export const Header = styled.header`
-  background-color: #853b5c;
-  color: white;
+  background-color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.textGray};
 `;
 
 export const NavBar = styled.nav`
   height: 80px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.white};
+  font-family: 'IM Fell English SC', 'IM Fell English', serif;
   font-size: 15px;
-  color: #b4b2bb;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.textGray};
+  letter-spacing: 0.04em;
+  color: ${({ theme }) => theme.colors.textLightGray};
+  border-bottom: 3px double ${({ theme }) => theme.colors.borderGray};
   z-index: 1;
   padding: 0;
 

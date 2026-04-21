@@ -12,9 +12,9 @@ export const Input = styled.input`
   font-weight: ${({ theme }) => theme.fonts.regular};
   font-size: ${({ theme }) => theme.sizes.dMedium};
 
-  border-radius: 10px;
-  background: #f9f9f9;
-  border: 1px solid #cacaca;
+  border-radius: 2px;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.borderGray};
 `;
 
 export const InputLabel = styled.p`
@@ -32,9 +32,9 @@ export const Select = styled.select`
   font-weight: ${({ theme }) => theme.fonts.regular};
   font-size: ${({ theme }) => theme.sizes.dMedium};
 
-  border-radius: 10px;
-  background: #f9f9f9;
-  border: 1px solid #cacaca;
+  border-radius: 2px;
+  background: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.borderGray};
 `;
 
 export const InputRow = styled.div`

@@ -31,7 +31,7 @@ export const SummaryCard = styled.section`
   padding: 20px;
   margin: 0 20px 24px;
   border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 8px;
+  border-radius: 2px;
   background: ${({ theme }) => theme.colors.white};
   display: grid;
   gap: 16px;
@@ -52,7 +52,7 @@ export const AverageBlock = styled.div`
 export const AverageScoreBadge = styled.div`
   min-width: 64px;
   height: 64px;
-  border-radius: 8px;
+  border-radius: 2px;
   background: ${({ theme }) => theme.colors.otelBlue};
   color: ${({ theme }) => theme.colors.white};
   font-weight: 700;
@@ -92,7 +92,7 @@ export const ScoreLabel = styled.span`
 export const ScoreBar = styled.div`
   position: relative;
   height: 10px;
-  border-radius: 6px;
+  border-radius: 2px;
   background: ${({ theme }) => theme.colors.lightBorderGray};
   overflow: hidden;
 `;
@@ -134,7 +134,7 @@ export const ReviewsGrid = styled.ul`
 
 export const ReviewCard = styled.li`
   border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 8px;
+  border-radius: 2px;
   background: ${({ theme }) => theme.colors.white};
   padding: 16px;
   display: grid;
@@ -161,7 +161,7 @@ export const AskAISection = styled.section`
   padding: 20px;
   margin: 0 20px 24px;
   border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 8px;
+  border-radius: 2px;
   background: ${({ theme }) => theme.colors.white};
   display: grid;
   gap: 12px;
@@ -190,7 +190,7 @@ export const AskAIInput = styled.input`
   min-width: 0;
   padding: 10px 12px;
   border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 6px;
+  border-radius: 2px;
   font-size: 16px;
   outline: none;
   background: ${({ theme }) => theme.colors.white};
@@ -212,7 +212,7 @@ export const AskAIControls = styled.div`
 export const QuickPromptButton = styled.button`
   padding: 8px 12px;
   border: 1px solid ${({ theme }) => theme.colors.borderGray};
-  border-radius: 6px;
+  border-radius: 2px;
   background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.otelGray};
   font-size: 14px;
@@ -231,7 +231,7 @@ export const QuickPromptButton = styled.button`
 export const AskAIButton = styled.button`
   padding: 8px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 2px;
   background: ${({ theme }) => theme.colors.otelBlue};
   color: ${({ theme }) => theme.colors.white};
   font-size: 14px;

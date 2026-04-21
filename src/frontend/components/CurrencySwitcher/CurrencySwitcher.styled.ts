@@ -61,5 +61,5 @@ export const Select = styled.select`
   flex-shrink: 0;
   padding: 1px 0 0 45px;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 2px;
 `;
