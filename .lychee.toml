@@ -1,0 +1,20 @@
+# Copyright The OpenTelemetry Authors
+# SPDX-License-Identifier: Apache-2.0
+
+# Need this to avoid getting "bot denied"
+user_agent = "Mozilla/5.0 (compatible; lychee link checker)"
+
+# Reduce false failures when external sites are briefly unreachable from CI runners.
+max_retries = 4
+retry_wait_time = 2
+
+exclude = [
+  "^http://localhost",
+  "^https://calendar\\.google\\.com/calendar",
+]
+
+exclude_path = [
+  "CHANGELOG\\.md",
+]
+
+accept = ["200", "429"]
