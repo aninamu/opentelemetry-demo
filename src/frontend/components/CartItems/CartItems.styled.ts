@@ -21,7 +21,7 @@ export const CardItemsHeader = styled.div`
 export const CartItemImage = styled.img`
   width: 100%;
   height: auto;
-  border-radius: 5px;
+  border-radius: 2px;
   object-fit: contain;
 
   ${({ theme }) => theme.breakpoints.desktop} {

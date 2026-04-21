@@ -8,7 +8,7 @@ export const CheckoutItem = styled.div`
   display: grid;
   grid-template-columns: 1fr;
   padding: 25px;
-  border-radius: 5px;
+  border-radius: 2px;
   border: 1px solid ${({ theme }) => theme.colors.lightBorderGray};
 
   ${({ theme }) => theme.breakpoints.desktop} {
@@ -82,7 +82,7 @@ export const ItemImage = styled(Image).attrs({
   width: '80',
   height: '80',
 })`
-  border-radius: 5px;
+  border-radius: 2px;
   object-fit: contain;
 `;
 

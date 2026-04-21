@@ -34,11 +34,37 @@ export const HotProducts = styled.div`
 `;
 
 export const HotProductsTitle = styled.h1`
+  font-family: 'IM Fell English SC', 'IM Fell English', serif;
   font-size: ${({ theme }) => theme.sizes.mLarge};
   font-weight: ${({ theme }) => theme.fonts.bold};
+  letter-spacing: 0.12em;
+  font-variant: small-caps;
+  text-align: center;
+  margin: 0 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: ${({ theme }) => theme.colors.textGray};
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    max-width: 120px;
+    height: 1px;
+    background: ${({ theme }) => theme.colors.borderGray};
+    opacity: 0.85;
+  }
 
   ${({ theme }) => theme.breakpoints.desktop} {
     font-size: ${({ theme }) => theme.sizes.dxLarge};
+    gap: 24px;
+
+    &::before,
+    &::after {
+      max-width: 200px;
+    }
   }
 `;
 

@@ -51,7 +51,7 @@ export const RightColumn = styled.div`
   gap: 8px;
   padding: 20px;
   background-color: ${({ theme }) => theme.colors.backgroundGray};
-  border-radius: 8px;
+  border-radius: 2px;
 
   ${({ theme }) => theme.breakpoints.desktop} {
     grid-area: right;
@@ -135,14 +135,14 @@ export const OrderItem = styled.div`
   padding: 16px;
   background-color: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.lightBorderGray};
-  border-radius: 8px;
+  border-radius: 2px;
 `;
 
 export const ItemImage = styled.img`
   width: 80px;
   height: 80px;
   object-fit: contain;
-  border-radius: 5px;
+  border-radius: 2px;
   flex-shrink: 0;
 `;
 
@@ -179,7 +179,7 @@ export const OrderSummary = styled.div`
   gap: 12px;
   padding: 24px;
   background-color: ${({ theme }) => theme.colors.backgroundGray};
-  border-radius: 8px;
+  border-radius: 2px;
   margin-top: 16px;
 `;
 
