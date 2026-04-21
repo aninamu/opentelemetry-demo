@@ -15,6 +15,11 @@ export const Input = styled.input`
   border-radius: 2px;
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.borderGray};
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.otelBlue};
+    outline-offset: 2px;
+  }
 `;
 
 export const InputLabel = styled.p`
@@ -35,6 +40,11 @@ export const Select = styled.select`
   border-radius: 2px;
   background: ${({ theme }) => theme.colors.white};
   border: 1px solid ${({ theme }) => theme.colors.borderGray};
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.otelBlue};
+    outline-offset: 2px;
+  }
 `;
 
 export const InputRow = styled.div`

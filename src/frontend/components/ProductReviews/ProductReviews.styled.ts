@@ -196,9 +196,10 @@ export const AskAIInput = styled.input`
   background: ${({ theme }) => theme.colors.white};
   color: ${({ theme }) => theme.colors.otelGray};
 
-  &:focus {
+  &:focus-visible {
     border-color: ${({ theme }) => theme.colors.otelBlue};
-    box-shadow: 0 0 0 3px rgba(0, 112, 201, 0.15);
+    box-shadow: 0 0 0 3px rgba(122, 46, 31, 0.2);
+    outline: none;
   }
 `;
 
@@ -222,6 +223,11 @@ export const QuickPromptButton = styled.button`
     border-color: ${({ theme }) => theme.colors.otelBlue};
   }
 
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.otelBlue};
+    outline-offset: 2px;
+  }
+
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -240,6 +246,11 @@ export const AskAIButton = styled.button`
 
   &:hover {
     filter: brightness(1.05);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.otelYellow};
+    outline-offset: 2px;
   }
 
   &:disabled {

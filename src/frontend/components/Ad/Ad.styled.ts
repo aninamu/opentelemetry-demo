@@ -12,7 +12,7 @@ export const Ad = styled.section`
   padding: 48px;
 
   * {
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.textGray};
     margin: 0;
     cursor: pointer;
   }

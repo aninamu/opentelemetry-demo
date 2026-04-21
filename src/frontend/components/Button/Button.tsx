@@ -22,6 +22,11 @@ const Button = styled.button<{ $type?: 'primary' | 'secondary' | 'link' }>`
   font-variant: small-caps;
   text-transform: lowercase;
 
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.otelYellow};
+    outline-offset: 3px;
+  }
+
   ${({ $type = 'primary' }) =>
     $type === 'secondary' &&
     css`
@@ -29,6 +34,10 @@ const Button = styled.button<{ $type?: 'primary' | 'secondary' | 'link' }>`
       color: ${({ theme }) => theme.colors.otelBlue};
       border: 3px double ${({ theme }) => theme.colors.otelBlue};
       box-shadow: none;
+
+      &:focus-visible {
+        outline-color: ${({ theme }) => theme.colors.otelBlue};
+      }
     `};
 
   ${({ $type = 'primary' }) =>
@@ -40,6 +49,11 @@ const Button = styled.button<{ $type?: 'primary' | 'secondary' | 'link' }>`
       box-shadow: none;
       height: auto;
       padding: 4px 0;
+
+      &:focus-visible {
+        outline-offset: 2px;
+        outline-color: ${({ theme }) => theme.colors.otelBlue};
+      }
     `};
 `;
 
