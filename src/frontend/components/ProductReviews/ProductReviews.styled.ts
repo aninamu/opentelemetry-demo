@@ -198,7 +198,7 @@ export const AskAIInput = styled.input`
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.otelBlue};
-    box-shadow: 0 0 0 3px rgba(0, 112, 201, 0.15);
+    box-shadow: 0 0 0 3px rgba(122, 46, 31, 0.15);
   }
 `;
 
