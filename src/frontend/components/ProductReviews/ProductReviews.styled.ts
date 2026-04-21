@@ -54,7 +54,7 @@ export const AverageScoreBadge = styled.div`
   height: 64px;
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.otelBlue};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.paperHighlight};
   font-weight: 700;
   font-size: 24px;
   display: grid;
@@ -198,7 +198,7 @@ export const AskAIInput = styled.input`
 
   &:focus {
     border-color: ${({ theme }) => theme.colors.otelBlue};
-    box-shadow: 0 0 0 3px rgba(0, 112, 201, 0.15);
+    box-shadow: 0 0 0 3px rgba(107, 45, 45, 0.2);
   }
 `;
 
@@ -233,7 +233,7 @@ export const AskAIButton = styled.button`
   border: none;
   border-radius: 6px;
   background: ${({ theme }) => theme.colors.otelBlue};
-  color: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.paperHighlight};
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;

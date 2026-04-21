@@ -5,16 +5,17 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 export const Header = styled.header`
-  background-color: #853b5c;
-  color: white;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-top: 4px solid ${({ theme }) => theme.colors.otelGray};
 `;
 
 export const NavBar = styled.nav`
   height: 80px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.colors.white};
   font-size: 15px;
-  color: #b4b2bb;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.textGray};
+  color: ${({ theme }) => theme.colors.textLightGray};
+  border-bottom: 2px solid ${({ theme }) => theme.colors.borderGray};
+  box-shadow: inset 0 -1px 0 ${({ theme }) => theme.colors.lightBorderGray};
   z-index: 1;
   padding: 0;
 

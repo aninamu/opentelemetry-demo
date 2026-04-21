@@ -17,15 +17,15 @@ html, body {
 }
 
 body {
-  background: white;
+  background: #f4f0e6;
   margin: 0px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'EB Garamond', 'Libre Baskerville', Georgia, 'Times New Roman', serif;
 }
 
 body * {
   box-sizing: border-box;
-  color: #29293E;
-  font-weight: 600;
+  color: #2a2218;
+  font-weight: 500;
 }
 
 #__next {

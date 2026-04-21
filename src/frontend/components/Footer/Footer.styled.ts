@@ -7,10 +7,12 @@ export const Footer = styled.footer`
   position: relative;
   padding: 65px 9%;
   background-color: ${({ theme }) => theme.colors.otelGray};
+  border-top: 3px double ${({ theme }) => theme.colors.lightBorderGray};
 
   * {
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.paperHighlight};
     font-size: ${({ theme }) => theme.sizes.dSmall};
     font-weight: ${({ theme }) => theme.fonts.regular};
+    letter-spacing: 0.02em;
   }
 `;

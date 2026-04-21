@@ -13,14 +13,14 @@ export const Container = styled.div`
   align-items: center;
   position: relative;
   margin-left: 40px;
-  color: #605f64;
+  color: ${({ theme }) => theme.colors.textLightGray};
 
   &::-webkit-input-placeholder,
   &::-moz-placeholder,
   :-ms-input-placeholder,
   :-moz-placeholder {
     font-size: 12px;
-    color: #605f64;
+    color: ${({ theme }) => theme.colors.textLightGray};
   }
 `;
 
@@ -61,5 +61,5 @@ export const Select = styled.select`
   flex-shrink: 0;
   padding: 1px 0 0 45px;
   font-size: 16px;
-  border-radius: 10px;
+  border-radius: 3px;
 `;

@@ -21,6 +21,9 @@ export const Image = styled.div<{ $src: string }>`
 
 export const ProductCard = styled.div`
   cursor: pointer;
+  padding: 12px;
+  border: 1px solid ${({ theme }) => theme.colors.lightBorderGray};
+  background: ${({ theme }) => theme.colors.backgroundGray};
 `;
 
 export const ProductName = styled.p`

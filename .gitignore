@@ -24,6 +24,7 @@ obj/
 .idea/
 build/
 node_modules/
+*.tsbuildinfo
 coverage
 .next/
 out/
