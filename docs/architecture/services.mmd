@@ -1,0 +1,107 @@
+%% OpenTelemetry Astronomy Shop — Service Topology
+%% Focuses on user-facing and service-to-service traffic.
+%% Edge styles:
+%%   solid  = synchronous request (HTTP / gRPC)
+%%   dotted = asynchronous messaging (Kafka)
+%%   dashed = feature-flag evaluation (flagd)
+flowchart LR
+    classDef app      fill:#4F46E5,stroke:#312E81,color:#FFFFFF,stroke-width:1px
+    classDef gateway  fill:#0EA5E9,stroke:#075985,color:#FFFFFF,stroke-width:1px
+    classDef infra    fill:#F59E0B,stroke:#92400E,color:#111827,stroke-width:1px
+    classDef data     fill:#10B981,stroke:#065F46,color:#FFFFFF,stroke-width:1px
+    classDef client   fill:#6B7280,stroke:#1F2937,color:#FFFFFF,stroke-width:1px
+
+    User([User / Browser]):::client
+    Mobile([React Native App]):::client
+    Locust([load-generator<br/><i>Python · Locust</i>]):::client
+
+    subgraph EDGE["Edge"]
+        Envoy[["frontend-proxy<br/><i>Envoy</i>"]]:::gateway
+    end
+
+    subgraph UI["UI"]
+        Frontend["frontend<br/><i>TypeScript · Next.js</i>"]:::app
+        FlagdUI["flagd-ui<br/><i>Elixir · Phoenix</i>"]:::app
+        TelemetryDocs["telemetry-docs<br/><i>MkDocs</i>"]:::app
+        ImageProvider["image-provider<br/><i>NGINX</i>"]:::app
+    end
+
+    subgraph CORE["Core Services"]
+        Ad["ad<br/><i>Java</i>"]:::app
+        Cart["cart<br/><i>.NET</i>"]:::app
+        Checkout["checkout<br/><i>Go</i>"]:::app
+        Currency["currency<br/><i>C++</i>"]:::app
+        Email["email<br/><i>Ruby</i>"]:::app
+        Payment["payment<br/><i>Node.js</i>"]:::app
+        ProductCatalog["product-catalog<br/><i>Go</i>"]:::app
+        ProductReviews["product-reviews<br/><i>Python</i>"]:::app
+        Quote["quote<br/><i>PHP</i>"]:::app
+        Recommendation["recommendation<br/><i>Python</i>"]:::app
+        Shipping["shipping<br/><i>Rust</i>"]:::app
+        Accounting["accounting<br/><i>.NET</i>"]:::app
+        FraudDetection["fraud-detection<br/><i>Kotlin</i>"]:::app
+        LLM["llm<br/><i>Python</i>"]:::app
+    end
+
+    subgraph DATA["Data &amp; Messaging"]
+        Postgres[("astronomy-db<br/><i>PostgreSQL</i>")]:::data
+        Valkey[("valkey-cart<br/><i>Valkey</i>")]:::data
+        Kafka[/"kafka<br/><i>Apache Kafka</i>"/]:::infra
+    end
+
+    Flagd["flagd<br/><i>OpenFeature</i>"]:::infra
+
+    User -->|HTTP| Envoy
+    Mobile -->|HTTP| Envoy
+    Locust -->|load| Envoy
+
+    Envoy --> Frontend
+    Envoy --> FlagdUI
+    Envoy --> TelemetryDocs
+    Envoy --> ImageProvider
+
+    Frontend --> Ad
+    Frontend --> Cart
+    Frontend --> Checkout
+    Frontend --> Currency
+    Frontend --> ProductCatalog
+    Frontend --> ProductReviews
+    Frontend --> Recommendation
+    Frontend --> Shipping
+    Frontend --> Quote
+    Frontend --> ImageProvider
+
+    Checkout --> Cart
+    Checkout --> Currency
+    Checkout --> Email
+    Checkout --> Payment
+    Checkout --> ProductCatalog
+    Checkout --> Shipping
+
+    Recommendation --> ProductCatalog
+    ProductReviews --> ProductCatalog
+    ProductReviews --> LLM
+    Shipping --> Quote
+
+    Cart --> Valkey
+    ProductCatalog --> Postgres
+    ProductReviews --> Postgres
+    Accounting --> Postgres
+
+    Checkout -. order events .-> Kafka
+    Kafka -. consume .-> Accounting
+    Kafka -. consume .-> FraudDetection
+
+    FlagdUI -. manage .-> Flagd
+    Ad -.-> Flagd
+    Cart -.-> Flagd
+    Checkout -.-> Flagd
+    Email -.-> Flagd
+    FraudDetection -.-> Flagd
+    Frontend -.-> Flagd
+    LLM -.-> Flagd
+    Payment -.-> Flagd
+    ProductCatalog -.-> Flagd
+    ProductReviews -.-> Flagd
+    Recommendation -.-> Flagd
+    Locust -.-> Flagd

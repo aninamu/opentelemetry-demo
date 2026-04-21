@@ -1,0 +1,43 @@
+%% OpenTelemetry Astronomy Shop — Telemetry Pipeline
+%% All application services emit OTLP traces/metrics/logs to the
+%% OpenTelemetry Collector, which fans out to backend stores.
+flowchart LR
+    classDef app       fill:#4F46E5,stroke:#312E81,color:#FFFFFF,stroke-width:1px
+    classDef telemetry fill:#EF4444,stroke:#7F1D1D,color:#FFFFFF,stroke-width:1px
+    classDef gateway   fill:#0EA5E9,stroke:#075985,color:#FFFFFF,stroke-width:1px
+    classDef infra     fill:#F59E0B,stroke:#92400E,color:#111827,stroke-width:1px
+
+    subgraph APPS["Instrumented Services (OTLP clients)"]
+        direction TB
+        S1["accounting · ad · cart · checkout"]:::app
+        S2["currency · email · fraud-detection"]:::app
+        S3["frontend · frontend-proxy · flagd · flagd-ui"]:::app
+        S4["image-provider · kafka · llm · load-generator"]:::app
+        S5["payment · product-catalog · product-reviews"]:::app
+        S6["quote · recommendation · shipping"]:::app
+    end
+
+    Collector["otel-collector<br/><i>OpenTelemetry Collector (Contrib)</i>"]:::telemetry
+
+    subgraph BACKENDS["Backends"]
+        Jaeger["jaeger<br/><i>Traces</i>"]:::telemetry
+        Prometheus["prometheus<br/><i>Metrics</i>"]:::telemetry
+        OpenSearch["opensearch<br/><i>Logs</i>"]:::telemetry
+    end
+
+    Grafana["grafana<br/><i>Dashboards / Explore</i>"]:::telemetry
+
+    S1 -- OTLP --> Collector
+    S2 -- OTLP --> Collector
+    S3 -- OTLP --> Collector
+    S4 -- OTLP --> Collector
+    S5 -- OTLP --> Collector
+    S6 -- OTLP --> Collector
+
+    Collector -- traces --> Jaeger
+    Collector -- metrics --> Prometheus
+    Collector -- logs --> OpenSearch
+
+    Grafana --> Jaeger
+    Grafana --> Prometheus
+    Grafana --> OpenSearch
