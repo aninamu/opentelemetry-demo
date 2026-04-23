@@ -52,6 +52,8 @@ const nextConfig = {
     return config;
   },
   env: {
+    NEXT_PUBLIC_GITHUB_REPO: process.env.NEXT_PUBLIC_GITHUB_REPO || 'aninamu/opentelemetry-demo',
+    NEXT_PUBLIC_GITHUB_REF: process.env.NEXT_PUBLIC_GITHUB_REF || 'main',
     AD_ADDR,
     CART_ADDR,
     CHECKOUT_ADDR,
