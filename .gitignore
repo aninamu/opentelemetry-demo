@@ -56,6 +56,7 @@ docker-compose.override.yml
 
 src/frontend/cypress/videos
 src/frontend/cypress/screenshots
+src/frontend/.env.local
 src/shipping/target/
 test/tracetesting/tracetesting-vars.yaml
 

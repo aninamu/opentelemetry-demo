@@ -149,6 +149,17 @@ const Status = styled.p`
   color: rgba(38, 37, 30, 0.75);
 `;
 
+const Answer = styled.pre`
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 12px;
+  background: #f0efeb;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #e1e0db;
+`;
+
 const BodyScroll = styled.div`
   flex: 1;
   overflow-y: auto;
@@ -188,7 +199,15 @@ function treeUrlForService(service: string): string {
 
 export default function DevModePanel() {
   const { enabled, selected, setSelected, lastFetches, hydrated } = useDevMode();
-  const [prompt, setPrompt] = useState('');
+  const [question, setQuestion] = useState('');
+  const [asking, setAsking] = useState(false);
+  const [askAgentId, setAskAgentId] = useState<string | null>(null);
+  const [askPollStatus, setAskPollStatus] = useState<string>('');
+  const [askAnswer, setAskAnswer] = useState<string | null>(null);
+  const [askError, setAskError] = useState<string | null>(null);
+  const [askRunUrl, setAskRunUrl] = useState<string | null>(null);
+
+  const [prPrompt, setPrPrompt] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [agentId, setAgentId] = useState<string | null>(null);
   const [pollStatus, setPollStatus] = useState<string>('');
@@ -219,7 +238,14 @@ export default function DevModePanel() {
 
   const close = useCallback(() => {
     setSelected(null);
-    setPrompt('');
+    setQuestion('');
+    setAsking(false);
+    setAskAgentId(null);
+    setAskPollStatus('');
+    setAskAnswer(null);
+    setAskError(null);
+    setAskRunUrl(null);
+    setPrPrompt('');
     setAgentId(null);
     setPollStatus('');
     setPrUrl(null);
@@ -256,8 +282,93 @@ export default function DevModePanel() {
     return () => clearInterval(t);
   }, [agentId, prUrl]);
 
+  // Poll for answer when we have an ask agent id
+  useEffect(() => {
+    if (!askAgentId || askAnswer) return;
+    const tick = async () => {
+      try {
+        const r = await fetch(`/api/dev-mode/agent?id=${encodeURIComponent(askAgentId)}`);
+        if (!r.ok) return;
+        const data = (await r.json()) as {
+          status?: string;
+          summary?: string;
+          url?: string | null;
+        };
+        if (data.summary) {
+          setAskAnswer(data.summary);
+          setAskPollStatus('Answer is ready');
+          if (data.url) {
+            setAskRunUrl(data.url);
+          }
+          return;
+        }
+        if (data.url) {
+          setAskRunUrl(data.url);
+        }
+        if (data.status) {
+          setAskPollStatus(String(data.status));
+        }
+      } catch {
+        // ignore
+      }
+    };
+    void tick();
+    const t = setInterval(tick, 5000);
+    return () => clearInterval(t);
+  }, [askAgentId, askAnswer]);
+
+  const onAskSubmit = useCallback(async () => {
+    if (!question.trim() || !selected) return;
+    // #region agent log
+    fetch('http://127.0.0.1:7285/ingest/50f01c19-3880-4e53-af06-7d52d46f47d7',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'1d6013'},body:JSON.stringify({sessionId:'1d6013',runId:'initial',hypothesisId:'H5',location:'components/DevMode/DevModePanel.tsx:onAskSubmit:start',message:'ask submit initiated from dev mode panel',data:{questionLength:question.trim().length,hasSelected:Boolean(selected),relatedServicesCount:relatedServices.length,pageUrl:typeof window !== 'undefined' ? window.location.href : null},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
+    setAsking(true);
+    setAskError(null);
+    setAskAnswer(null);
+    setAskRunUrl(null);
+    setAskAgentId(null);
+    try {
+      const r = await fetch('/api/dev-mode/agent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'ask',
+          prompt: question.trim(),
+          pageUrl: typeof window !== 'undefined' ? window.location.href : undefined,
+          selection: {
+            fileName: selected.fileName,
+            lineNumber: selected.lineNumber,
+            columnNumber: selected.columnNumber,
+            componentName: selected.componentName,
+            tagName: selected.tagName,
+          },
+          services: relatedServices,
+        }),
+      });
+      const data = await r.json();
+      // #region agent log
+      fetch('http://127.0.0.1:7285/ingest/50f01c19-3880-4e53-af06-7d52d46f47d7',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'1d6013'},body:JSON.stringify({sessionId:'1d6013',runId:'initial',hypothesisId:'H5',location:'components/DevMode/DevModePanel.tsx:onAskSubmit:response',message:'ask submit API response received',data:{ok:r.ok,status:r.status,error:(data as { error?: string }).error ?? null,hasAgentId:Boolean((data as { agentId?: string }).agentId)},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
+      if (!r.ok) {
+        setAskError((data as { error?: string }).error || r.statusText);
+        return;
+      }
+      const aid = (data as { agentId?: string }).agentId;
+      if (aid) {
+        setAskAgentId(aid);
+        setAskPollStatus('Question submitted - waiting for answer...');
+      } else {
+        setAskError('Unexpected response');
+      }
+    } catch (e) {
+      setAskError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setAsking(false);
+    }
+  }, [question, selected, relatedServices]);
+
   const onSubmit = useCallback(async () => {
-    if (!prompt.trim() || !selected) return;
+    if (!prPrompt.trim() || !selected) return;
     setSubmitting(true);
     setError(null);
     setPrUrl(null);
@@ -267,7 +378,8 @@ export default function DevModePanel() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: prompt.trim(),
+          action: 'open-pr',
+          prompt: prPrompt.trim(),
           pageUrl: typeof window !== 'undefined' ? window.location.href : undefined,
           selection: {
             fileName: selected.fileName,
@@ -296,7 +408,7 @@ export default function DevModePanel() {
     } finally {
       setSubmitting(false);
     }
-  }, [prompt, selected, relatedServices]);
+  }, [prPrompt, selected, relatedServices]);
 
   if (!hydrated || !enabled || !selected) {
     return null;
@@ -350,15 +462,40 @@ export default function DevModePanel() {
             )}
           </Section>
           <Section>
+            <Label>Cursor: ask a question</Label>
+            <Textarea
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder="Ask about this UI element or related services; a short-lived Cursor cloud agent will answer inline."
+            />
+            <Submit
+              type="button"
+              disabled={asking || !question.trim()}
+              onClick={onAskSubmit}
+            >
+              {asking ? 'Asking…' : 'Ask (Cursor)'}
+            </Submit>
+            {askError && <Status style={{ color: '#b32' }}>Error: {askError}</Status>}
+            {askAgentId && !askAnswer && <Status>{askPollStatus || 'Checking status…'}</Status>}
+            {askAnswer && <Answer>{askAnswer}</Answer>}
+            {askRunUrl && (
+              <p style={{ marginTop: 8 }}>
+                <LinkButton href={askRunUrl} target="_blank" rel="noopener noreferrer">
+                  Open agent run
+                </LinkButton>
+              </p>
+            )}
+          </Section>
+          <Section>
             <Label>Cursor: open a PR</Label>
             <Textarea
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
+              value={prPrompt}
+              onChange={(e) => setPrPrompt(e.target.value)}
               placeholder="Describe the change to make; a Cursor cloud agent will open a PR (requires server CURSOR_API_KEY)."
             />
             <Submit
               type="button"
-              disabled={submitting || !prompt.trim()}
+              disabled={submitting || !prPrompt.trim()}
               onClick={onSubmit}
             >
               {submitting ? 'Launching…' : 'Open PR (Cursor)'}
