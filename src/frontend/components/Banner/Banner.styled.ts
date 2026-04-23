@@ -9,22 +9,8 @@ export const Banner = styled.div`
   flex-direction: column;
 
   ${({ theme }) => theme.breakpoints.desktop} {
-    flex-direction: row-reverse;
     padding-bottom: 38px;
     background: ${({ theme }) => theme.colors.backgroundGray};
-  }
-`;
-
-export const BannerImg = styled.img.attrs({
-  src: '/images/Banner.png',
-})`
-  width: 100%;
-  height: auto;
-`;
-
-export const ImageContainer = styled.div`
-  ${({ theme }) => theme.breakpoints.desktop} {
-    min-width: 50%;
   }
 `;
 
@@ -36,7 +22,9 @@ export const TextContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: start;
-    width: 50%;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
     padding: 100px 160px 100px 100px;
   }
 `;
