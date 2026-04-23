@@ -7,6 +7,9 @@ the release.
 
 ## Unreleased
 
+* [frontend] Add optional **dev mode** (toggle, element inspect overlay, GitHub
+  source links, backend service hints) and server API to launch a Cursor cloud
+  agent / open a PR when `CURSOR_API_KEY` is set
 * [payment] Fix `charge` span lifecycle and exception attribution: wrap charge
   logic in `try/catch/finally` to ensure the span is always ended, record
   exceptions on the `charge` span where they originate, and remove duplicate
